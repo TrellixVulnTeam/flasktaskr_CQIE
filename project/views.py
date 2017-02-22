@@ -9,7 +9,7 @@ from flask import Flask, flash, redirect, render_template, \
 # config
 
 app = Flask(__name__)
-app.config.from_object('__config__')
+app.config.from_object('_config')
 
 # helper functions
 def connect_db():
@@ -34,13 +34,17 @@ def logout():
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
-	if request.method = 'POST':
-		if request.form['username'] != app.config['USERNAME'] \
-		        or request.form['password'] != app.config['PASSWORD']:
-		    error = 'Invalid credentials. Please try again.'
-		    return render_template('login.html', error=error)
+	if request.method == 'POST':
+		if request.form['username'] != app.config['USERNAME'] or request.form['password'] != app.config['PASSWORD']:
+			error = 'Invalid credentials. Please try again.'
+			return render_template('login.html', error=error)
 		else:
-			session['logged_in'] = Trueflash('Welcome!')
-	return redirect(url_for('tasks'))
+			session['logged_in'] = True
+			flash('Welcome!')
+			return redirect(url_for('tasks'))
+
+	return render_template('login.html')
+
+
 
 
